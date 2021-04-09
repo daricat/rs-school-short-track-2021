@@ -17,8 +17,26 @@
  * }
  */
 
-function removeKFromList(/* l, k */) {
-  throw new Error('Not implemented');
+function removeKFromList(l, k) {
+  let previousNode = null;
+  const licstCycle = (list) => {
+    const listCopy = list;
+    if (listCopy.next) {
+      if (listCopy.value === k) {
+        if (previousNode) {
+          listCopy.value = listCopy.next.value;
+          listCopy.next = listCopy.next.next;
+          licstCycle(listCopy.next);
+        } else {
+          previousNode = listCopy.next;
+          licstCycle(previousNode);
+        }
+      }
+      licstCycle(listCopy.next);
+    }
+    return previousNode;
+  };
+  return licstCycle(l);
 }
 
 module.exports = removeKFromList;
