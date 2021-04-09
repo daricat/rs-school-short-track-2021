@@ -21,8 +21,41 @@
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new Error('Not implemented');
+function minesweeper(matrix) {
+  const formCoords = [
+    [-1, +0],
+    [-1, +1],
+    [+0, +1],
+    [+1, +1],
+    [+1, +0],
+    [+1, -1],
+    [+0, -1],
+    [-1, -1],
+  ];
+  const getCoordsNearestPoints = (row, column) => {
+    const coords = formCoords.map((coord) => [
+      row + coord[0],
+      column + coord[1],
+    ]);
+    return coords.filter((coord) => coord.every(
+      (el) => (el >= 0 && el < matrix.length) || (el >= 0 && el < matrix.length),
+    ));
+  };
+
+  const resultMatix = JSON.parse(JSON.stringify(matrix));
+
+  matrix.forEach((row, i) => {
+    row.forEach((cell, j) => {
+      resultMatix[i][j] = 0;
+      getCoordsNearestPoints(i, j).forEach((coord) => {
+        if (matrix[coord[0]][coord[1]] === true) {
+          resultMatix[i][j] += 1;
+        }
+      });
+    });
+  });
+
+  return resultMatix;
 }
 
 module.exports = minesweeper;
